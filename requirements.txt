@@ -1,0 +1,32 @@
+# Core lmms-eval runtime dependencies for VSI-Super-Wild release.
+# Install lmms-eval itself separately from your preferred source/version.
+accelerate>=0.29.1
+datasets>=2.19.0
+evaluate>=0.4.0
+jsonlines
+loguru
+numpy>=1.26.4
+pillow
+pyyaml
+torch>=2.1.0
+torchvision>=0.16.0
+tqdm
+transformers>=4.51.0
+qwen-vl-utils>=0.0.14
+decord; platform_system != "Darwin"
+av<16.0.0
+opencv-python-headless
+sentencepiece
+protobuf
+safetensors
+pandas>=2.2.0
+scikit-learn>=1.4.0
+tenacity>=8.3.0
+numexpr
+einops
+timm
+openpyxl
+Jinja2
+packaging
+pydantic
+tiktoken

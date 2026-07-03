@@ -1,0 +1,156 @@
+# VSI-Super-Wild
+
+**Towards Spatial Supersensing in the Wild**
+
+[Project Page](https://vsi-super-wild.github.io/) · [Paper](https://arxiv.org/) · [Code](https://github.com/THUSI-Lab/VSI-Super-Wild) · [Dataset](https://huggingface.co/datasets/THUSI-Lab/VSI-Super-Wild)
+
+VSI-Super-Wild is a large-scale benchmark for evaluating whether multimodal large language models can build, maintain, and query implicit world states from long-form, in-the-wild video streams. It extends spatial supersensing beyond synthetic indoor clips and object-centric probing toward real-world egocentric experience across the **agent-object-environment** triad.
+
+![VSI-Super-Wild teaser](assets/teaser.png)
+
+## Highlights
+
+- **In-the-wild long videos:** 442 high-quality view-level videos totaling 284.52 hours of egocentric experience.
+- **Human-verified QA:** 6,980 QA pairs across four cognitively grounded spatial supersensing tasks.
+- **Unified evaluation:** one lmms-eval task, `vsi_super_wild`, backed by `tasks/vsi_super_wild/data/vsi_super_wild_qa.jsonl`.
+- **Clean release schema:** QA rows contain only `doc_id`, `video_name`, `task_type`, `question`, `answer`, `frame_indices`, and `options`.
+- **Flexible video lookup:** clean QA video names such as `Z7ta3z5qcMA_back.mp4` can resolve to either exact filenames or mirrored files with semantic prefixes.
+
+## Motivation
+
+Existing spatial supersensing benchmarks mark an important step toward testing implicit world modeling, but they leave real-world continuity and broader world-state coverage underexplored. VSI-Super-Wild moves from concatenated short indoor clips toward natural long-video streams and multi-anchor probing of agent, object, and environment states.
+
+![Motivation](assets/motivation.png)
+
+## Task Suite
+
+VSI-Super-Wild evaluates four tasks over the agent-object-environment triad:
+
+| Task | Name | Anchor | What It Tests |
+|---|---|---|---|
+| `VMR` | Motion Orientation Recall | Agent | Inferring camera/person motion orientation relative to viewing direction at a queried moment. |
+| `VPO` | Place Temporal Ordering | Environment | Ordering place frames under yaw-rotated viewpoints, requiring heading-invariant place representations. |
+| `VOO` | Object Temporal Ordering | Object | Ordering queried objects by first or last occurrence, testing object-state updates over time. |
+| `VOC` | Continuous Object Counting | Object | Predicting unique-instance counts from a full video stream with a maintained count state. |
+
+![Task suite](assets/task_illustration.png)
+
+## Dataset Construction
+
+The benchmark is built through a semi-automatic pipeline with human-in-the-loop verification. We collect and filter in-the-wild panoramic YouTube videos, project panoramas into perspective views, derive temporal and spatial metadata, synthesize rule-based QA, and verify the resulting samples with rollback when metadata or QA needs refinement.
+
+![Data construction](assets/data_construction.png)
+
+## Statistics
+
+The released QA file contains:
+
+| Split File | QA Rows | Unique Videos |
+|---|---:|---:|
+| `tasks/vsi_super_wild/data/vsi_super_wild_qa.jsonl` | 6,980 | 442 |
+
+Task distribution:
+
+| Task | QA Rows |
+|---|---:|
+| `VOC` | 1,113 |
+| `VMR` | 1,215 |
+| `VPO` | 1,302 |
+| `VOO` | 3,350 |
+
+![Benchmark statistics](assets/benchstatistics.png)
+
+## Evaluation Setup
+
+Install lmms-eval first, then install the runtime dependencies for this release package:
+
+```bash
+pip install -r requirements.txt
+```
+
+If you use an existing lmms-eval checkout, keep it on `PYTHONPATH` or run from that environment. The task is included through `--include_path ./tasks`.
+
+Set the video root before evaluation:
+
+```bash
+export VSI_SUPER_WILD_VIDEO_ROOT=/path/to/mc9/videos
+```
+
+Then run a small evaluation:
+
+```bash
+python scripts/run_vsi_super_wild_eval.py \
+  --model qwen2_5_vl \
+  --model_args "pretrained=Qwen/Qwen2.5-VL-7B-Instruct" \
+  --limit 10
+```
+
+Check command wiring without loading a model:
+
+```bash
+python scripts/run_vsi_super_wild_eval.py \
+  --model qwen2_vl \
+  --model_args pretrained=dummy \
+  --limit 2 \
+  --dry_run
+```
+
+You can also call lmms-eval directly:
+
+```bash
+python -m lmms_eval eval \
+  --model qwen2_5_vl \
+  --model_args "pretrained=Qwen/Qwen2.5-VL-7B-Instruct" \
+  --tasks vsi_super_wild \
+  --include_path ./tasks \
+  --batch_size 1 \
+  --device cuda \
+  --log_samples
+```
+
+## Metrics
+
+The task reports:
+
+- `accuracy` for multiple-choice and temporal-ordering tasks.
+- `mra` for continuous counting (`VOC`), computed from relative count error.
+
+For counting, a close numeric prediction receives partial credit through MRA even when exact-match accuracy is zero.
+
+## Repository Layout
+
+```text
+.
+├── assets/
+├── scripts/
+│   ├── recompute_results_from_samples.py
+│   └── run_vsi_super_wild_eval.py
+├── tasks/
+│   └── vsi_super_wild/
+│       ├── vsi_super_wild.yaml
+│       ├── utils.py
+│       └── data/
+│           └── vsi_super_wild_qa.jsonl
+├── requirements.txt
+├── run.sh
+└── run_lmms_eval.sh
+```
+
+## Diagnostics
+
+VSI-Super-Wild reveals recurring failure modes in current MLLMs, including spatial collapse, semantic shortcuts, insufficient updates, and instance confusion under long-horizon real-world video streams.
+
+![Duration bucket comparison](assets/duration_bucket_comparison.png)
+
+![Error analysis](assets/error_analysis_si.png)
+
+## Citation
+
+```bibtex
+@misc{vsi_super_wild,
+  title        = {Towards Spatial Supersensing in the Wild},
+  author       = {Gu, Tianjun and Xin, Tianyu and Zhang, Kuan and others},
+  year         = {2026},
+  howpublished = {\url{https://vsi-super-wild.github.io/}}
+}
+```

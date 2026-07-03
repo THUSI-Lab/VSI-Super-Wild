@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+.env
+.venv/
+venv/
+results*/
+outputs*/
+wandb/
