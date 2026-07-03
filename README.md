@@ -1,16 +1,17 @@
 # VSI-Super-Wild
 
-**Towards Spatial Supersensing in the Wild**
+**Towards Spatial Supersensing in the Wild**  
+**ECCV 2026**
 
 [Project Page](https://vsi-super-wild.github.io/) · [Paper](https://arxiv.org/) · [Code](https://github.com/THUSI-Lab/VSI-Super-Wild) · [Dataset](https://huggingface.co/datasets/THUSI-Lab/VSI-Super-Wild)
 
-VSI-Super-Wild is a large-scale benchmark for evaluating whether multimodal large language models can build, maintain, and query implicit world states from long-form, in-the-wild video streams. It extends spatial supersensing beyond synthetic indoor clips and object-centric probing toward real-world egocentric experience across the **agent-object-environment** triad.
+VSI-Super-Wild is an ECCV 2026 benchmark for evaluating whether multimodal large language models can build, maintain, and query implicit world states from genuinely long-form, in-the-wild video streams. It advances spatial supersensing beyond synthetic indoor clips and object-centric probing toward real-world egocentric experience across the **agent-object-environment** triad.
 
 ![VSI-Super-Wild teaser](assets/teaser.png)
 
 ## Highlights
 
-- **In-the-wild long videos:** 442 high-quality view-level videos totaling 284.52 hours of egocentric experience.
+- **In-the-wild long videos:** 442 high-quality view-level videos across 8 scene categories, totaling 284.52 hours of egocentric experience.
 - **Human-verified QA:** 6,980 QA pairs across four cognitively grounded spatial supersensing tasks.
 - **Unified evaluation:** one lmms-eval task, `vsi_super_wild`, backed by `tasks/vsi_super_wild/data/vsi_super_wild_qa.jsonl`.
 - **Clean release schema:** QA rows contain only `doc_id`, `video_name`, `task_type`, `question`, `answer`, `frame_indices`, and `options`.
@@ -60,6 +61,28 @@ Task distribution:
 
 ![Benchmark statistics](assets/benchstatistics.png)
 
+
+## Data Preparation
+
+Download the VSI-Super-Wild video files from the [Hugging Face dataset](https://huggingface.co/datasets/THUSI-Lab/VSI-Super-Wild), then extract them into the repository-level `data/` directory:
+
+```text
+VSI-Super-Wild/
+├── data/
+│   ├── long_video_persp/
+│   ├── new_long_video_persp/
+│   └── top20merge_0207_persp/
+└── tasks/vsi_super_wild/data/vsi_super_wild_qa.jsonl
+```
+
+By default, the evaluator looks for videos under `./data`. If your videos live elsewhere, set:
+
+```bash
+export VSI_SUPER_WILD_VIDEO_ROOT=/path/to/extracted/videos
+```
+
+The QA file stores clean names such as `Z7ta3z5qcMA_back.mp4`; the resolver supports both exact filenames and mirrored files with semantic prefixes.
+
 ## Evaluation Setup
 
 Install lmms-eval first, then install the runtime dependencies for this release package:
@@ -70,13 +93,7 @@ pip install -r requirements.txt
 
 If you use an existing lmms-eval checkout, keep it on `PYTHONPATH` or run from that environment. The task is included through `--include_path ./tasks`.
 
-Set the video root before evaluation:
-
-```bash
-export VSI_SUPER_WILD_VIDEO_ROOT=/path/to/mc9/videos
-```
-
-Then run a small evaluation:
+After extracting videos into `data/`, run a small evaluation:
 
 ```bash
 python scripts/run_vsi_super_wild_eval.py \
@@ -122,6 +139,7 @@ For counting, a close numeric prediction receives partial credit through MRA eve
 ```text
 .
 ├── assets/
+├── data/                  # extracted videos from Hugging Face
 ├── scripts/
 │   ├── recompute_results_from_samples.py
 │   └── run_vsi_super_wild_eval.py

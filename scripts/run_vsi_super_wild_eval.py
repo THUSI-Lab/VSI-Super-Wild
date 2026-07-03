@@ -13,7 +13,7 @@ REPO_ROOT = PROJECT_ROOT.parent
 TASKS_DIR = PROJECT_ROOT / "tasks"
 TASK_DATA_FILE = TASKS_DIR / "vsi_super_wild" / "data" / "vsi_super_wild_qa.jsonl"
 TASK_NAME = "vsi_super_wild"
-DEFAULT_VIDEO_ROOT = os.environ.get("VSI_SUPER_WILD_VIDEO_ROOT") or os.getcwd()
+DEFAULT_VIDEO_ROOT = os.environ.get("VSI_SUPER_WILD_VIDEO_ROOT") or str(PROJECT_ROOT / "data")
 
 MODEL_CONFIGS = {
     "qwen2_vl_2b": {"model": "qwen2_vl", "model_args": "pretrained=Qwen/Qwen2-VL-2B-Instruct"},

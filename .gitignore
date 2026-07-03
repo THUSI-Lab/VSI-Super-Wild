@@ -8,3 +8,9 @@ venv/
 results*/
 outputs*/
 wandb/
+
+# Downloaded video data; keep only directory docs/placeholders.
+data/**
+!data/
+!data/.gitkeep
+!data/README.md

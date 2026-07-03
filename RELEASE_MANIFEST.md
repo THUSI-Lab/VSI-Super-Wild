@@ -9,6 +9,7 @@ Included:
 - runner: `scripts/run_vsi_super_wild_eval.py`
 - optional wrapper: `run_lmms_eval.sh`
 - requirements file: `requirements.txt`
+- video data placeholder: `data/`
 
 Not included:
 
