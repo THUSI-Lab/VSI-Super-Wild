@@ -14,11 +14,9 @@ VSI-Super-Wild is an ECCV 2026 benchmark for evaluating whether multimodal large
 
 ## Highlights
 
-- **Spatial supersensing in the wild:** VSI-Super-Wild moves beyond synthetic long videos made from short indoor clips, introducing genuinely long-form, in-the-wild video streams from diverse real-world scenes.
-- **Agent-object-environment world modeling:** the benchmark systematically probes the full triad of world state: the agent, objects, and the environment.
-- **Large-scale human-verified benchmark:** VSI-Super-Wild contains 442 high-quality view-level videos across 8 scene categories, totaling 284.52 hours, and 6,980 human-verified QA pairs.
-- **Cognitively grounded task design:** four tasks, VMR, VPO, VOO, and VOC, evaluate motion-state recall, heading-invariant place representations, temporal object-state updates, and long-horizon count-state maintenance.
-- **Diagnostic evaluation of MLLMs:** experiments across mainstream MLLMs characterize degradation with world-state complexity and temporal horizon, and identify four recurring failure modes: spatial collapse, semantic shortcuts, insufficient update, and instance confusion.
+- **In-the-Wild Video Benchmark:** VSI-Super-Wild curates 442 long-form videos across 8 scene categories, totaling 284.52 hours, with 6,980 human-verified QA pairs for spatial supersensing in unconstrained, real-world settings.
+- **Multi-Anchor Task Suite:** four cognitively grounded tasks probe implicit world states beyond objects, spanning agent, object, and environment anchors to systematically evaluate world modeling over space and time.
+- **Diagnostic Insights:** benchmarking mainstream MLLMs with task- and horizon-wise analyses exposes recurring failure modes and open challenges for spatial supersensing in the wild.
 
 ## Motivation
 
