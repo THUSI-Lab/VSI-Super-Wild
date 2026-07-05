@@ -8,7 +8,7 @@
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/THUSI-Lab/VSI-Super-Wild)
 [![Dataset](https://img.shields.io/badge/Dataset-Hugging%20Face-FFD21E?logo=huggingface&logoColor=black)](https://huggingface.co/datasets/THUSI-Lab/VSI-Super-Wild)
 
-VSI-Super-Wild is an ECCV 2026 benchmark for evaluating whether multimodal large language models can build, maintain, and query implicit world states from genuinely long-form, in-the-wild video streams. It advances spatial supersensing beyond synthetic indoor clips and object-centric probing toward real-world egocentric experience across the **agent-object-environment** triad.
+Humans make sense of continuous sensory streams by maintaining implicit world states that support spatial reasoning and prediction. Spatial supersensing asks whether multimodal models can develop similar capabilities, but existing benchmarks remain largely synthetic, household-centered, and object-centric. VSI-Super-Wild addresses this gap with genuinely long-form, in-the-wild videos and cognitively grounded tasks that probe world modeling across the **agent-object-environment** triad.
 
 ![VSI-Super-Wild teaser](assets/teaser.png)
 
