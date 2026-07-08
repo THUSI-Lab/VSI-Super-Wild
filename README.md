@@ -135,6 +135,12 @@ The task reports:
 
 For counting, a close numeric prediction receives partial credit through MRA even when exact-match accuracy is zero.
 
+## Performance Across Temporal Horizons
+
+Model performance generally degrades as the evaluated video duration grows, highlighting the difficulty of maintaining coherent world states over long-horizon real-world streams.
+
+![Duration bucket comparison](assets/duration_bucket_comparison.png)
+
 ## Repository Layout
 
 ```text
@@ -157,11 +163,24 @@ For counting, a close numeric prediction receives partial credit through MRA eve
 
 ## Diagnostics
 
-VSI-Super-Wild reveals recurring failure modes in current MLLMs, including spatial collapse, semantic shortcuts, insufficient updates, and instance confusion under long-horizon real-world video streams.
+Current MLLMs perform poorly across VSI-Super-Wild, suggesting that spatial supersensing in the wild remains challenging under diverse scenes and longer temporal horizons. We conduct qualitative and quantitative analyses and summarize four recurring failure modes:
 
-![Duration bucket comparison](assets/duration_bucket_comparison.png)
+- **Spatial Collapse:** models fail to maintain a coherent spatial world state across views and instead fall back to view-specific 2D frame matching rather than implicit 3D world modeling.
+- **Semantic Shortcut:** models exploit semantic shortcuts instead of inferring motion from spatiotemporal evidence and updating an agent-centric world state.
+- **Insufficient Update:** models can preserve early world states relatively well, but struggle to sufficiently update world states as new evidence arrives.
+- **Instance Confusion:** in-the-wild visual complexity remains challenging because models need robust object identity tracking under motion blur, partial occlusion, and viewpoint change.
 
 ![Error analysis](assets/error_analysis_si.png)
+
+Case studies for **semantic shortcut** and **instance confusion** in in-the-wild videos.
+
+![Spatial collapse diagnostic](assets/spatial_collapse.png)
+
+**Spatial collapse** diagnostic.
+
+![Insufficient update diagnostic](assets/updating.png)
+
+**Insufficient update** diagnostic.
 
 ## Citation
 
