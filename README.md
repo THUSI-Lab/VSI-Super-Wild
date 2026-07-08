@@ -166,10 +166,11 @@ VSI-Super-Wild reveals recurring failure modes in current MLLMs, including spati
 ## Citation
 
 ```bibtex
-@misc{vsi_super_wild,
-  title        = {Towards Spatial Supersensing in the Wild},
-  author       = {Gu, Tianjun and Xin, Tianyu and Zhang, Kuan and others},
-  year         = {2026},
-  howpublished = {\url{https://vsi-super-wild.github.io/}}
+@article{VSI_Super_Wild,
+  title   = {Towards Spatial Supersensing in the Wild},
+  author  = {Gu, Tianjun and Xin, Tianyu and Zhang, Kuan and Yang, Bowen and Chua, Kok-Chung and Li, Peize and Zhang, Xinran and Chen, Yupeng and Zhao, Qiyue and Xie, Qinlei and Liu, Jianhang and Lu, Yucheng and Han, Yinan and Pavone, Marco and Li, Yiming},
+  journal = {arXiv preprint},
+  year    = {2026},
+  url     = {https://vsi-super-wild.github.io/}
 }
 ```
