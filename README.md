@@ -65,14 +65,14 @@ Task distribution:
 
 ## Data Preparation
 
-Download the VSI-Super-Wild video files from the [Hugging Face dataset](https://huggingface.co/datasets/THUSI-Lab/VSI-Super-Wild), then extract them into the repository-level `data/` directory:
+Download the VSI-Super-Wild video files from the [Hugging Face dataset](https://huggingface.co/datasets/THUSI-Lab/VSI-Super-Wild), then extract or place all videos directly under the repository-level `data/` directory:
 
 ```text
 VSI-Super-Wild/
 ├── data/
-│   ├── long_video_persp/
-│   ├── new_long_video_persp/
-│   └── top20merge_0207_persp/
+│   ├── Z7ta3z5qcMA_back.mp4
+│   ├── ...
+│   └── <video_name>.mp4
 └── tasks/vsi_super_wild/data/vsi_super_wild_qa.jsonl
 ```
 
@@ -82,7 +82,7 @@ By default, the evaluator looks for videos under `./data`. If your videos live e
 export VSI_SUPER_WILD_VIDEO_ROOT=/path/to/extracted/videos
 ```
 
-The QA file stores clean names such as `Z7ta3z5qcMA_back.mp4`; the resolver supports both exact filenames and mirrored files with semantic prefixes.
+The QA file stores only clean filenames in `video_name`, such as `Z7ta3z5qcMA_back.mp4`; no subfolder field is required. The evaluator resolves each sample as `VSI_SUPER_WILD_VIDEO_ROOT/video_name`, with fallback support for older mirrored filenames with semantic prefixes.
 
 ## Evaluation Setup
 
