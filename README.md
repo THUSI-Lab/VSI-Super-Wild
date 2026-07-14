@@ -9,7 +9,7 @@
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/THUSI-Lab/VSI-Super-Wild)
 [![Dataset](https://img.shields.io/badge/Dataset-Hugging%20Face-FFD21E?logo=huggingface&logoColor=black)](https://huggingface.co/datasets/THUSI-Lab/VSI-Super-Wild)
 
-Humans make sense of continuous sensory streams by maintaining implicit world states that support spatial reasoning and prediction. Spatial supersensing asks whether multimodal models can develop similar capabilities, but existing benchmarks remain largely synthetic, household-centered, and object-centric. VSI-Super-Wild addresses this gap with genuinely long-form, in-the-wild videos and cognitively grounded tasks that probe world modeling across the **agent-object-environment** triad.
+Humans make sense of continuous sensory streams by maintaining implicit world states that support spatial reasoning and prediction. Spatial supersensing asks whether multimodal models can develop similar capabilities, but existing benchmarks remain largely synthetic, household-centered, and object-centric. **VSI-Super-Wild** addresses this gap with genuinely long-form, in-the-wild videos and cognitively grounded tasks that probe world modeling across the **agent-object-environment** triad.
 
 ![VSI-Super-Wild teaser](assets/teaser.png)
 
@@ -195,9 +195,9 @@ Case studies for **semantic shortcut** and **instance confusion** in in-the-wild
 ## Citation
 
 ```bibtex
-@inproceedings{Vsi_Super_Wild,
+@inproceedings{VSI_Super_Wild,
   title={Towards Spatial Supersensing in the Wild},
-  author={Tianjun Gu, Tianyu Xin, Kuan Zhang, Bowen Yang, Kok-Chung Chua, Peize Li, Xinran Zhang, Yupeng Chen, Qiyue Zhao, Qinlei Xie, Jianhang Liu, Yucheng Lu, Yinan Han, Marco Pavone, Yiming Li},
+  author={Tianjun Gu and Tianyu Xin and Kuan Zhang and Bowen Yang and Kok-Chung Chua and Peize Li and Xinran Zhang and Yupeng Chen and Qiyue Zhao and Qinlei Xie and Jianhang Liu and Yucheng Lu and Yinan Han and Marco Pavone and Yiming Li},
   booktitle={The Nineteenth European Conference on Computer Vision},
   year={2026}
 }
