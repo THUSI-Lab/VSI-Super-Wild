@@ -46,16 +46,17 @@ class VsiSuperWildTest(unittest.TestCase):
             {"voc_mra": 0.8, "overall": {"task_type": "VOC", "score": 0.8}},
         )
 
-    def test_overall_is_equal_weighted_across_tasks(self):
+    def test_overall_is_question_level_aggregate(self):
         results = [
             {"task_type": "VMR", "score": 1.0},
+            {"task_type": "VMR", "score": 0.0},
             {"task_type": "VMR", "score": 0.0},
             {"task_type": "VPO", "score": 1.0},
             {"task_type": "VOO", "score": 0.0},
             {"task_type": "VOC", "score": 0.5},
         ]
-        self.assertEqual(utils.aggregate_overall(results), 50.0)
-        self.assertEqual(utils.aggregate_overall(results[:2]), 50.0)
+        self.assertAlmostEqual(utils.aggregate_overall(results), 100.0 * 2.5 / 6)
+        self.assertAlmostEqual(utils.aggregate_overall(results[:3]), 100.0 / 3)
 
 
 if __name__ == "__main__":

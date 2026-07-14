@@ -437,17 +437,15 @@ def aggregate_mra(results: List[Dict[str, Any]]) -> float:
 
 
 def aggregate_overall(results: List[Dict[str, Any]]) -> float:
-    """Average the four task-level scores with equal task weights."""
-    by_task: dict[str, list[float]] = {task: [] for task in ("VMR", "VPO", "VOO", "VOC")}
+    """Aggregate all question-level scores across tasks."""
+    scores = []
     for item in results:
         if not isinstance(item, dict):
             continue
-        task_type = str(item.get("task_type") or "").upper()
         score = _as_float_or_none(item.get("score"))
-        if task_type in by_task and score is not None:
-            by_task[task_type].append(score)
+        if score is not None:
+            scores.append(score)
 
-    task_scores = [sum(values) / len(values) for values in by_task.values() if values]
-    if not task_scores:
+    if not scores:
         return 0.0
-    return sum(task_scores) / len(task_scores) * 100.0
+    return sum(scores) / len(scores) * 100.0

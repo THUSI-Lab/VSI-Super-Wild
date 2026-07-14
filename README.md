@@ -133,26 +133,32 @@ The task reports the same five scores as the paper:
 
 - `vmr_accuracy`, `vpo_accuracy`, and `voo_accuracy` for the three multiple-choice tasks.
 - `voc_mra` for continuous counting (`VOC`), computed from relative count error.
-- `overall`, the equally weighted mean of the four task-level scores.
+- `overall`, the question-level aggregate score across all tasks.
 
 For counting, a close numeric prediction receives partial credit through MRA. VOC does not report an additional accuracy score.
 
 ## Performance Overview
 
-Task scores are reported as accuracy (%) for **VMR**, **VPO**, and **VOO**, and MRA (%) for **VOC**. **Overall** is the equally weighted mean across the four tasks. Bold and underlined values denote the best and second-best results, respectively.
+Task scores are reported as mean &plusmn; standard error of the mean (SEM): accuracy (%) for **VMR**, **VPO**, and **VOO**, and MRA (%) for **VOC**. **Overall** is the question-level aggregate score across all tasks. Bold and underlined values denote the best and second-best results, respectively.
 
 | Model | Base LM | VMR | VPO | VOO | VOC | Overall |
 |---|---|---:|---:|---:|---:|---:|
 | **Proprietary Models** | | | | | | |
-| Gemini-2.5-Pro | UNK. | 28.90 | 24.50 | 24.80 | 8.90 | 21.78 |
-| Gemini-3-Pro | UNK. | 29.20 | 22.80 | 27.75 | <u>17.70</u> | 24.36 |
-| GPT-5.2 | UNK. | <u>30.40</u> | 23.40 | **39.35** | 17.20 | **27.59** |
+| GPT-5.4 | UNK. | **37.76 &plusmn; 3.02** | 24.87 &plusmn; 2.63 | 37.62 &plusmn; 3.13 | 32.94 &plusmn; 1.11 | <u>34.52 &plusmn; 1.68</u> |
+| Gemini-3.1-Pro | UNK. | <u>34.21 &plusmn; 2.26</u> | **63.84 &plusmn; 4.46** | **42.54 &plusmn; 1.35** | **38.16 &plusmn; 5.13** | **44.36 &plusmn; 1.39** |
+| Gemini-3.1-FlashLite | UNK. | 28.96 &plusmn; 2.30 | <u>28.81 &plusmn; 1.75</u> | 23.17 &plusmn; 0.85 | 20.35 &plusmn; 1.80 | 23.85 &plusmn; 0.72 |
 | **Open-Source Models** | | | | | | |
-| Qwen2.5-VL-7B | Qwen2.5-7B | 25.00 | 23.40 | 22.60 | 8.40 | 19.85 |
-| Cambrian-S-7B | Qwen2.5-7B | **33.20** | <u>25.70</u> | <u>35.65</u> | 9.70 | 26.06 |
-| Cambrian-S-7B-LFP | Qwen2.5-7B | 30.10 | 24.80 | 33.25 | 9.60 | 24.44 |
-| Qwen2.5-VL-3B | Qwen2.5-3B | 25.00 | **26.20** | 11.30 | 12.30 | 18.70 |
-| Cambrian-S-3B | Qwen2.5-3B | 27.70 | 24.30 | 33.10 | **24.50** | <u>27.40</u> |
+| Cambrian-S-0.5B | Qwen2.5-0.5B | 24.36 &plusmn; 1.23 | 10.14 &plusmn; 0.84 | 20.87 &plusmn; 0.70 | 33.30 &plusmn; 0.95 | 21.46 &plusmn; 0.46 |
+| Cambrian-S-3B | Qwen2.5-3B | 25.68 &plusmn; 1.25 | 25.42 &plusmn; 1.21 | 38.63 &plusmn; 0.84 | 34.06 &plusmn; 0.96 | 33.18 &plusmn; 0.54 |
+| Cambrian-S-7B | Qwen2.5-7B | 26.91 &plusmn; 1.27 | 25.58 &plusmn; 1.21 | 40.36 &plusmn; 0.85 | 33.81 &plusmn; 0.97 | 34.22 &plusmn; 0.54 |
+| Cambrian-S-7B-LFP<sup>*</sup> | Qwen2.5-7B | 28.62 &plusmn; 1.20 | 26.06 &plusmn; 2.46 | 39.26 &plusmn; 3.69 | 26.17 &plusmn; 7.98 | 32.86 &plusmn; 2.24 |
+| Cambrian-S-7B-LFP | Qwen2.5-7B | 26.58 &plusmn; 1.27 | 26.11 &plusmn; 1.22 | 40.27 &plusmn; 0.85 | 28.36 &plusmn; 0.94 | 33.35 &plusmn; 0.54 |
+| InternVL3.5-8B | Qwen3-8B | 27.90 &plusmn; 1.29 | 24.65 &plusmn; 1.19 | 35.13 &plusmn; 0.82 | <u>36.74 &plusmn; 0.96</u> | 32.18 &plusmn; 0.53 |
+| Qwen2-VL-7B | Qwen2-7B | 27.41 &plusmn; 1.28 | 23.66 &plusmn; 1.18 | 30.21 &plusmn; 0.79 | 18.72 &plusmn; 7.98 | 26.67 &plusmn; 1.37 |
+| Qwen2.5-VL-7B | Qwen2.5-7B | 31.52 &plusmn; 1.33 | 26.11 &plusmn; 1.22 | 35.61 &plusmn; 0.83 | 22.11 &plusmn; 0.87 | 30.98 &plusmn; 0.53 |
+| Qwen3-VL-8B | Qwen3-8B | 25.60 &plusmn; 1.25 | 24.35 &plusmn; 1.19 | 40.36 &plusmn; 0.85 | 32.73 &plusmn; 7.98 | 33.59 &plusmn; 1.37 |
+| Qwen3.5-9B | Qwen3.5-9B | 25.68 &plusmn; 1.25 | 25.19 &plusmn; 1.20 | <u>41.25 &plusmn; 0.85</u> | 30.76 &plusmn; 0.95 | 33.87 &plusmn; 0.54 |
+| Spatial-TTT-nano<sup>*</sup> | Qwen3-2B | 24.53 &plusmn; 1.23 | 24.12 &plusmn; 1.19 | 27.82 &plusmn; 0.77 | 35.93 &plusmn; 0.96 | 27.85 &plusmn; 0.51 |
 
 ## Repository Layout
 
