@@ -8,7 +8,9 @@ Included:
 - task utils: `tasks/vsi_super_wild/utils.py`
 - runner: `scripts/run_vsi_super_wild_eval.py`
 - optional wrapper: `run_lmms_eval.sh`
+- regression tests under `tests/`
 - requirements file: `requirements.txt`
+- MIT license: `LICENSE`
 - video data placeholder: `data/`
 
 Not included:

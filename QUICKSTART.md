@@ -6,13 +6,13 @@ cd VSI-Super-Wild
 pip install -r requirements.txt
 ```
 
-Download the video files from Hugging Face and extract them into `./data/`:
+Download the video archives from Hugging Face and extract every archive into `./data/`. All video files should be directly inside that directory:
 
 ```text
 VSI-Super-Wild/data/
-├── long_video_persp/
-├── new_long_video_persp/
-└── top20merge_0207_persp/
+├── Z7ta3z5qcMA_back.mp4
+├── ...
+└── <video_name>.mp4
 ```
 
 Then run a small evaluation:

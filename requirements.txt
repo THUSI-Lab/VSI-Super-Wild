@@ -1,5 +1,5 @@
-# Core lmms-eval runtime dependencies for VSI-Super-Wild release.
-# Install lmms-eval itself separately from your preferred source/version.
+# Tested lmms-eval revision and runtime dependencies for VSI-Super-Wild.
+lmms-eval @ git+https://github.com/EvolvingLMMs-Lab/lmms-eval.git@88b23e2bfa16a1edbc16e9e238ed82130b3a4f56
 accelerate>=0.29.1
 datasets>=2.19.0
 evaluate>=0.4.0

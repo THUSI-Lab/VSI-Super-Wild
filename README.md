@@ -1,7 +1,8 @@
-# VSI-Super-Wild
+<div align="center">
 
-**Towards Spatial Supersensing in the Wild**  
-**ECCV 2026**
+# [ECCV 2026] Towards Spatial Supersensing in the Wild
+
+</div>
 
 [![Project Page](https://img.shields.io/badge/Project-Page-4B8BBE?logo=googlechrome&logoColor=white)](https://vsi-super-wild.github.io/)
 [![Paper](https://img.shields.io/badge/Paper-arXiv-B31B1B?logo=arxiv&logoColor=white)](https://arxiv.org/)
@@ -86,7 +87,7 @@ The QA file stores only clean filenames in `video_name`, such as `Z7ta3z5qcMA_ba
 
 ## Evaluation Setup
 
-Install lmms-eval first, then install the runtime dependencies for this release package:
+Install the tested lmms-eval revision and runtime dependencies for this release package:
 
 ```bash
 pip install -r requirements.txt
@@ -128,18 +129,30 @@ python -m lmms_eval eval \
 
 ## Metrics
 
-The task reports:
+The task reports the same five scores as the paper:
 
-- `accuracy` for multiple-choice and temporal-ordering tasks.
-- `mra` for continuous counting (`VOC`), computed from relative count error.
+- `vmr_accuracy`, `vpo_accuracy`, and `voo_accuracy` for the three multiple-choice tasks.
+- `voc_mra` for continuous counting (`VOC`), computed from relative count error.
+- `overall`, the equally weighted mean of the four task-level scores.
 
-For counting, a close numeric prediction receives partial credit through MRA even when exact-match accuracy is zero.
+For counting, a close numeric prediction receives partial credit through MRA. VOC does not report an additional accuracy score.
 
-## Performance Across Temporal Horizons
+## Performance Overview
 
-Model performance generally degrades as the evaluated video duration grows, highlighting the difficulty of maintaining coherent world states over long-horizon real-world streams.
+Task scores are reported as accuracy (%) for **VMR**, **VPO**, and **VOO**, and MRA (%) for **VOC**. **Overall** is the equally weighted mean across the four tasks. Bold and underlined values denote the best and second-best results, respectively.
 
-![Duration bucket comparison](assets/duration_bucket_comparison.png)
+| Model | Base LM | VMR | VPO | VOO | VOC | Overall |
+|---|---|---:|---:|---:|---:|---:|
+| **Proprietary Models** | | | | | | |
+| Gemini-2.5-Pro | UNK. | 28.90 | 24.50 | 24.80 | 8.90 | 21.78 |
+| Gemini-3-Pro | UNK. | 29.20 | 22.80 | 27.75 | <u>17.70</u> | 24.36 |
+| GPT-5.2 | UNK. | <u>30.40</u> | 23.40 | **39.35** | 17.20 | **27.59** |
+| **Open-Source Models** | | | | | | |
+| Qwen2.5-VL-7B | Qwen2.5-7B | 25.00 | 23.40 | 22.60 | 8.40 | 19.85 |
+| Cambrian-S-7B | Qwen2.5-7B | **33.20** | <u>25.70</u> | <u>35.65</u> | 9.70 | 26.06 |
+| Cambrian-S-7B-LFP | Qwen2.5-7B | 30.10 | 24.80 | 33.25 | 9.60 | 24.44 |
+| Qwen2.5-VL-3B | Qwen2.5-3B | 25.00 | **26.20** | 11.30 | 12.30 | 18.70 |
+| Cambrian-S-3B | Qwen2.5-3B | 27.70 | 24.30 | 33.10 | **24.50** | <u>27.40</u> |
 
 ## Repository Layout
 
@@ -150,6 +163,8 @@ Model performance generally degrades as the evaluated video duration grows, high
 ├── scripts/
 │   ├── recompute_results_from_samples.py
 │   └── run_vsi_super_wild_eval.py
+├── tests/
+│   └── test_vsi_super_wild.py
 ├── tasks/
 │   └── vsi_super_wild/
 │       ├── vsi_super_wild.yaml
@@ -157,6 +172,7 @@ Model performance generally degrades as the evaluated video duration grows, high
 │       └── data/
 │           └── vsi_super_wild_qa.jsonl
 ├── requirements.txt
+├── LICENSE
 ├── run.sh
 └── run_lmms_eval.sh
 ```
@@ -174,22 +190,26 @@ Current MLLMs perform poorly across VSI-Super-Wild, suggesting that spatial supe
 
 Case studies for **semantic shortcut** and **instance confusion** in in-the-wild videos.
 
-![Spatial collapse diagnostic](assets/spatial_collapse.png)
-
-**Spatial collapse** diagnostic.
-
-![Insufficient update diagnostic](assets/updating.png)
-
-**Insufficient update** diagnostic.
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="assets/spatial_collapse.png" alt="Spatial collapse diagnostic" width="100%"><br>
+      <strong>Spatial collapse</strong>
+    </td>
+    <td align="center" width="50%">
+      <img src="assets/updating.png" alt="Insufficient update diagnostic" width="100%"><br>
+      <strong>Insufficient update</strong>
+    </td>
+  </tr>
+</table>
 
 ## Citation
 
 ```bibtex
-@article{VSI_Super_Wild,
-  title   = {Towards Spatial Supersensing in the Wild},
-  author  = {Gu, Tianjun and Xin, Tianyu and Zhang, Kuan and Yang, Bowen and Chua, Kok-Chung and Li, Peize and Zhang, Xinran and Chen, Yupeng and Zhao, Qiyue and Xie, Qinlei and Liu, Jianhang and Lu, Yucheng and Han, Yinan and Pavone, Marco and Li, Yiming},
-  journal = {arXiv preprint},
-  year    = {2026},
-  url     = {https://vsi-super-wild.github.io/}
+@inproceedings{Vsi_Super_Wild,
+  title={Towards Spatial Supersensing in the Wild},
+  author={Tianjun Gu, Tianyu Xin, Kuan Zhang, Bowen Yang, Kok-Chung Chua, Peize Li, Xinran Zhang, Yupeng Chen, Qiyue Zhao, Qinlei Xie, Jianhang Liu, Yucheng Lu, Yinan Han, Marco Pavone, Yiming Li},
+  booktitle={The Nineteenth European Conference on Computer Vision},
+  year={2026}
 }
 ```

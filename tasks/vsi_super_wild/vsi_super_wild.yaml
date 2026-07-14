@@ -16,11 +16,20 @@ fewshot_split: null
 fewshot_config: null
 num_fewshot: 0
 metric_list:
-  - metric: accuracy
+  - metric: vmr_accuracy
     aggregation: !function utils.aggregate_accuracy
     higher_is_better: true
-  - metric: mra
+  - metric: vpo_accuracy
+    aggregation: !function utils.aggregate_accuracy
+    higher_is_better: true
+  - metric: voo_accuracy
+    aggregation: !function utils.aggregate_accuracy
+    higher_is_better: true
+  - metric: voc_mra
     aggregation: !function utils.aggregate_mra
+    higher_is_better: true
+  - metric: overall
+    aggregation: !function utils.aggregate_overall
     higher_is_better: true
 generation_kwargs:
   max_new_tokens: 256

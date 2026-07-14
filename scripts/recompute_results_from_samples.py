@@ -38,7 +38,8 @@ def main() -> None:
     rows = _load_samples(args.samples)
     metric_items = []
     for row in rows:
-        if "accuracy" in row or "mra" in row or "correct" in row:
+        metric_names = {"vmr_accuracy", "vpo_accuracy", "voo_accuracy", "voc_mra", "overall"}
+        if metric_names.intersection(row):
             metric_items.append(row)
             continue
         doc = row.get("doc") or {}
@@ -47,10 +48,16 @@ def main() -> None:
             response = response[0] if response else ""
         metric_items.append(task_utils.process_results(doc, [str(response)]))
 
+    def values_for(metric: str):
+        return [item[metric] for item in metric_items if metric in item]
+
     print(json.dumps({
         "num_samples": len(rows),
-        "accuracy": task_utils.aggregate_accuracy(metric_items),
-        "mra": task_utils.aggregate_mra(metric_items),
+        "vmr_accuracy": task_utils.aggregate_accuracy(values_for("vmr_accuracy")),
+        "vpo_accuracy": task_utils.aggregate_accuracy(values_for("vpo_accuracy")),
+        "voo_accuracy": task_utils.aggregate_accuracy(values_for("voo_accuracy")),
+        "voc_mra": task_utils.aggregate_mra(values_for("voc_mra")),
+        "overall": task_utils.aggregate_overall(values_for("overall")),
     }, indent=2))
 
 

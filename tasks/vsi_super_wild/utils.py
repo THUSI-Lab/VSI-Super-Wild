@@ -22,7 +22,7 @@ except ImportError:  # pragma: no cover - optional fast path
     cpu = None
 
 FRAME_RECALL_CONTEXT_FRAMES = 12
-FRAME_RECALL_LABELS = ("A", "B", "C", "D")
+FRAME_RECALL_LABELS = ("1", "2", "3", "4")
 
 
 def _as_float_or_none(value: Any) -> float | None:
@@ -38,6 +38,8 @@ def _as_float_or_none(value: Any) -> float | None:
 def _extract_accuracy_value(item: Any) -> float | None:
     """Handle lmms-eval passing dicts, bools, or raw numeric metric values."""
     if isinstance(item, dict):
+        if "score" in item:
+            return _as_float_or_none(item.get("score"))
         if "accuracy" in item:
             return _as_float_or_none(item.get("accuracy"))
         if "correct" in item:
@@ -51,6 +53,8 @@ def _extract_accuracy_value(item: Any) -> float | None:
 def _extract_mra_value(item: Any) -> float | None:
     """Handle lmms-eval passing dicts or raw numeric metric values."""
     if isinstance(item, dict):
+        if "score" in item:
+            return _as_float_or_none(item.get("score"))
         if "mra" in item:
             return _as_float_or_none(item.get("mra"))
         return None
@@ -207,6 +211,7 @@ def extract_letter(text: str) -> str:
     text = text.upper().strip()
 
     patterns = [
+        r"^\s*([A-D])\s*$",
         r"ANSWER\s*(?:IS|:)?\s*[\"']?([A-D])[\"']?",
         r"\bOPTION\s*([A-D])\b",
         r"\bCHOICE\s*([A-D])\b",
@@ -223,11 +228,7 @@ def extract_letter(text: str) -> str:
     if match:
         return match.group(1)
 
-    for letter in ["A", "B", "C", "D"]:
-        if letter in text:
-            return letter
-
-    return "A"
+    return ""
 
 
 
@@ -364,38 +365,34 @@ def process_results(doc: Dict[str, Any], results: List[str]) -> Dict[str, Any]:
     family = _task_family(doc)
     gt = doc.get("answer")
 
-    out = {
-        "doc_id": doc.get("doc_id"),
-        "gt": gt,
-        "pred_raw": text,
-        "task_type": doc.get("task_type") or "unknown",
-    }
-
     if family == "VOO" and not doc.get("options"):
         pred = parse_sequence(text)
-        out["pred"] = pred
-        out["correct"] = pred == gt
-        out["accuracy"] = 1.0 if pred == gt else 0.0
-        return out
+        score = 1.0 if pred == gt else 0.0
+        return {
+            "voo_accuracy": score,
+            "overall": {"task_type": family, "score": score},
+        }
 
     if doc.get("options") is not None or family in {"VPO", "VMR"}:
         pred = extract_letter(text)
-        out["pred"] = pred
-        out["correct"] = pred == gt
-        out["accuracy"] = 1.0 if pred == gt else 0.0
-        return out
+        score = 1.0 if pred == gt else 0.0
+        metric = f"{family.lower()}_accuracy"
+        return {
+            metric: score,
+            "overall": {"task_type": family, "score": score},
+        }
 
     if family == "VOC":
         nums = re.findall(r"\d+", text)
         pred_val = int(nums[0]) if nums else 0
         gt_val = gt if isinstance(gt, int) else int(gt)
         mra = max(0.0, 1.0 - abs(pred_val - gt_val) / max(gt_val, 1))
-        out["pred"] = pred_val
-        out["mra"] = mra
-        out["accuracy"] = 1.0 if abs(pred_val - gt_val) / max(gt_val, 1) <= 0.1 else 0.0
-        return out
+        return {
+            "voc_mra": mra,
+            "overall": {"task_type": family, "score": mra},
+        }
 
-    return out
+    return {}
 
 # =============================================================================
 # lmms-eval Aggregation Functions
@@ -439,31 +436,18 @@ def aggregate_mra(results: List[Dict[str, Any]]) -> float:
     return sum(vals) / len(vals) * 100.0
 
 
-# =============================================================================
-# Legacy/Additional Aggregation Functions
-# =============================================================================
-
-def aggregate_results(results: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """
-    Legacy aggregation function for detailed per-task-type metrics.
-    Returns detailed breakdown by task type.
-    """
-    by_type = {}
+def aggregate_overall(results: List[Dict[str, Any]]) -> float:
+    """Average the four task-level scores with equal task weights."""
+    by_task: dict[str, list[float]] = {task: [] for task in ("VMR", "VPO", "VOO", "VOC")}
     for item in results:
-        task_type = item.get("task_type") or "unknown"
-        by_type.setdefault(task_type, []).append(item)
-
-    metrics = {}
-    for task_type, items in by_type.items():
-        if not items:
+        if not isinstance(item, dict):
             continue
-        if "accuracy" in items[0] or "correct" in items[0]:
-            acc = sum(x.get("accuracy", float(x.get("correct", False))) for x in items) / len(items) * 100.0
-            metrics[f"{task_type}_accuracy"] = acc
-        if "mra" in items[0]:
-            mra = sum(x.get("mra", 0) for x in items) / len(items) * 100.0
-            metrics[f"{task_type}_mra"] = mra
+        task_type = str(item.get("task_type") or "").upper()
+        score = _as_float_or_none(item.get("score"))
+        if task_type in by_task and score is not None:
+            by_task[task_type].append(score)
 
-    metrics["overall_accuracy"] = aggregate_accuracy(results)
-    metrics["overall_mra"] = aggregate_mra(results)
-    return metrics
+    task_scores = [sum(values) / len(values) for values in by_task.values() if values]
+    if not task_scores:
+        return 0.0
+    return sum(task_scores) / len(task_scores) * 100.0
