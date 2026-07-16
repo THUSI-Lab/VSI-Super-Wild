@@ -5,23 +5,23 @@
 </div>
 
 [![Project Page](https://img.shields.io/badge/Project-Page-4B8BBE?logo=googlechrome&logoColor=white)](https://vsi-super-wild.github.io/)
-[![Paper](https://img.shields.io/badge/Paper-arXiv-B31B1B?logo=arxiv&logoColor=white)](https://arxiv.org/)
+[![Paper](https://img.shields.io/badge/Paper-arXiv-B31B1B?logo=arxiv&logoColor=white)](https://arxiv.org/pdf/2607.13681)
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/THUSI-Lab/VSI-Super-Wild)
 [![Dataset](https://img.shields.io/badge/Dataset-Hugging%20Face-FFD21E?logo=huggingface&logoColor=black)](https://huggingface.co/datasets/THUSI-Lab/VSI-Super-Wild)
 
-Humans make sense of continuous sensory streams by maintaining implicit world states that support spatial reasoning and prediction. Spatial supersensing asks whether multimodal models can develop similar capabilities, but existing benchmarks remain largely synthetic, household-centered, and object-centric. **VSI-Super-Wild** addresses this gap with genuinely long-form, in-the-wild videos and cognitively grounded tasks that probe world modeling across the **agent-object-environment** triad.
+Humans make sense of continuous sensory streams by maintaining implicit world states that support spatial reasoning and prediction. Spatial supersensing asks whether multimodal models can develop similar capabilities, but existing benchmarks remain largely synthetic, household-centered, and object-centric. **VSI-Super-Wild** addresses this gap with real-world, in-the-wild videos spanning diverse temporal horizons and cognitively grounded tasks that probe world modeling across the **agent-object-environment** triad.
 
 ![VSI-Super-Wild teaser](assets/teaser.png)
 
 ## Highlights
 
-- **In-the-Wild Video Benchmark:** VSI-Super-Wild curates 442 long-form videos across 8 scene categories, totaling 284.52 hours, with 6,980 human-verified QA pairs for spatial supersensing in unconstrained, real-world settings.
+- **In-the-Wild Video Benchmark:** In total, **VSI-Super-Wild** contains **442** real-world videos across 8 scene categories, with the longest recordings exceeding 4 hours, and **6,980** human-verified question-answer pairs.
 - **Multi-Anchor Task Suite:** four cognitively grounded tasks probe implicit world states beyond objects, spanning agent, object, and environment anchors to systematically evaluate world modeling over space and time.
 - **Diagnostic Insights:** benchmarking mainstream MLLMs with task- and horizon-wise analyses exposes recurring failure modes and open challenges for spatial supersensing in the wild.
 
 ## Motivation
 
-Existing spatial supersensing benchmarks mark an important step toward testing implicit world modeling, but they leave real-world continuity and broader world-state coverage underexplored. VSI-Super-Wild moves from concatenated short indoor clips toward natural long-video streams and multi-anchor probing of agent, object, and environment states.
+Existing spatial supersensing benchmarks mark an important step toward testing implicit world modeling, but they leave real-world continuity and broader world-state coverage underexplored. VSI-Super-Wild moves from concatenated short indoor clips toward natural real-world video streams, including recordings exceeding 4 hours, and multi-anchor probing of agent, object, and environment states.
 
 ![Motivation](assets/motivation.png)
 
